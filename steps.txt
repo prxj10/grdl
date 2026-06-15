@@ -1,0 +1,88 @@
+mkdir grdl
+cd grdl
+gradle init --type java-application
+gradle build
+gradle run
+Expected Output:
+Hello world.
+gedit Jenkinsfile
+pipeline{
+agent any
+tools{
+gradle 'Gradle'
+jdk 'jdk'
+}
+stages{
+stage('Checkout'){
+steps{
+git branch:'master',url:'https://github.com/prxj10/grdl.git'
+}
+}
+stage('Build'){
+steps{
+sh 'gradle build'
+}
+}
+stage('Test'){
+steps{
+sh 'gradle test'
+}
+}
+stage('Run Application'){
+steps{
+sh 'gradle run'
+}
+}
+}
+post{
+success{
+echo 'Build and deployment successful!'
+}
+failure{
+echo 'Build failed!'
+}
+}
+}
+git init
+git add .
+git commit -m "First Commit"
+git remote add origin https://github.com/prxj10/grdl.git
+git remote set-url origin https://ghp_[YOURTOKEN]@github.com/prxj10/grdl.git
+git push -u origin master
+Open:
+http://localhost:8080
+Create:
+New Item
+Select:
+Pipeline
+Click:
+OK
+Under Pipeline Section:
+Definition:
+Pipeline script from SCM
+SCM:
+Git
+Repository URL:
+https://github.com/prxj10/grdl.git
+Branch Specifier:
+*/master
+Script Path:
+Jenkinsfile
+Click:
+Save
+Click:
+Build Now
+EXPECTED PIPELINE STAGES
+1. Checkout
+2. Build
+3. Test
+4. Run Application
+EXPECTED OUTPUT
+Hello world.
+Build and deployment successful!
+GRADLE COMMANDS
+gradle build
+gradle test
+gradle run
+gradle clean
+
